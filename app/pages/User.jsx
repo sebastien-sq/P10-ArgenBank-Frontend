@@ -1,8 +1,8 @@
 export default function User() {
     return (
       <div className="main bg-dark size-full">
-      <div className="header">
-        <h1>Welcome back<br />Tony Jarvis!</h1>
+      <div className="header p-4 w-full gap-2 flex flex-col items-center justify-center">
+        <h1 className="text-3xl font-bold">Welcome back<br />Tony Jarvis!</h1>
         <button className="edit-button">Edit Name</button>
       </div>
       <h2 className="sr-only">Accounts</h2>

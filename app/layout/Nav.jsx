@@ -1,10 +1,10 @@
 import {  NavLink} from "react-router"
 
 export default function Nav() {
-    const userIsLoggedIn = true;
+    const userIsLoggedIn = false;
 return (
     userIsLoggedIn ?  (
-      <nav className="main-nav w-full h-[10vh]">
+      <nav className="main-nav w-full h-[5vh]">
       <NavLink to="/" className="main-nav-logo" >
         <img
           className="main-nav-logo-image"
@@ -25,7 +25,7 @@ return (
       </div>
     </nav>
 ) : (
-        <nav className="main-nav w-full h-[10vh]">
+        <nav className="main-nav w-full h-[5vh]">
       <NavLink to="/" className="main-nav-logo">
         <img
           className="main-nav-logo-image"
@@ -35,10 +35,10 @@ return (
         <h1 className="sr-only">Argent Bank</h1>
       </NavLink>
       <div>
-        <NavLink to="/SignIn" className="main-nav-item">
+        <NavLink to="/sign-in" className="main-nav-item flex gap-1 items-center">
           <i className="fa fa-user-circle"></i>
           Sign In
-        </NavLink>
+        </NavLink>  
       </div>
     </nav>
     )

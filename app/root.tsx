@@ -9,7 +9,7 @@ import {
 
 import type { Route } from "./+types/root";
 import  Nav  from "../app/layout/Nav.jsx";
-import  Footer  from "../app/layout/Footer.jsx";
+import  Footer from "../app/layout/Footer.jsx";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -39,7 +39,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body className="m-0 flex flex-col min-h-screen items-center justify-between">
         <Nav/>
-        <main className="p-0 m-0  w-full h-[80vh]">
+        <main className="p-0 m-0  w-full h-[90vh]">
         {children}
         </main>
         <Footer/>
