@@ -8,9 +8,14 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
+import  Nav  from "../app/layout/Nav.jsx";
+import  Footer  from "../app/layout/Footer.jsx";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
+  {   rel:"stylesheet",
+      href:"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
@@ -32,8 +37,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="m-0 flex flex-col min-h-screen items-center justify-between">
+        <Nav/>
+        <main className="p-0 m-0  w-full h-[80vh]">
         {children}
+        </main>
+        <Footer/>
         <ScrollRestoration />
         <Scripts />
       </body>
