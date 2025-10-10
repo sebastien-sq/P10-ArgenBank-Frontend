@@ -1,7 +1,7 @@
 import  { useDispatch } from "react-redux";
 import {  useState } from "react";
 import {  signUpUser } from "~/slices/authSlice.js";
-import { isValidEmail, isValidPassword, isValidFirstName, isValidLastName } from "~/utils/formValidation";
+import { isValidEmail, isValidPassword, isValidFirstName, isValidLastName } from "~/utils/validateForm";
 import { useNavigate } from "react-router";
 
 

@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchUserProfile } from "./userSlice";
 
 
 export type credentialsType = {
@@ -13,15 +14,14 @@ const hasLocalStorage =
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
-  async ({
-    email,
-    password,
-    rememberMe,
-  }: {
-    email: string;
-    password: string;
-    rememberMe: boolean;
-  }) => {
+  async (
+    { email, password, rememberMe }: {
+      email: string;
+      password: string;
+      rememberMe: boolean;
+    }, 
+    { dispatch }  
+  ) => {
     try {
       const response = await fetch("http://localhost:3001/api/v1/user/login", {
         method: "POST",
@@ -41,6 +41,8 @@ export const loginUser = createAsyncThunk(
         window.localStorage.setItem("token", token);
       }
 
+      await dispatch(fetchUserProfile(token));
+      
       return token;
     } catch (err) {
       throw new Error((err as Error).message);
@@ -154,3 +156,4 @@ export const authSlice = createSlice({
   },
 });
 
+export const { logout, loginFailed } = authSlice.actions;

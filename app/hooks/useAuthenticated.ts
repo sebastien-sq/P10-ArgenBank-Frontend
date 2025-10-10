@@ -1,6 +1,10 @@
-import { useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import type { Store } from "~/store";
 
 export const useAuthenticated = () => {
-    return useSelector((state: Store) => state.auth.isAuthenticated);
+    return  useSelector((state: Store) => state.auth.isAuthenticated);
 };
+
+export const useFetchUserToken = () => {
+    return  useSelector((state: Store) => state.auth.token);
+}

@@ -1,23 +1,23 @@
 import {  useDispatch} from "react-redux";
 import { NavLink } from "react-router";
-import {  authSlice } from "~/slices/authSlice";
+import {  logout } from "~/slices/authSlice";
 import { useNavigate } from "react-router";
 import { useAuthenticated } from "~/hooks/useAuthenticated";
+import { useFetchUserFirstName } from "~/hooks/useUserProfile";
 
 
 export default function Nav() {
   const dispatch = useDispatch(); 
   const Navigate = useNavigate();
   const isAuthenticated = useAuthenticated();
- 
+  const userName = useFetchUserFirstName();
+
+
 
   const handleLogout = () => {
-    console.log("Logging out...");
-    dispatch(authSlice.actions.logout());
+    dispatch(logout());
     Navigate("/") ;
   }
-  // const userName = useSelector((state: any) => state.auth.user?.firstName);
-  const userName = "Seb"; // Temporary hardcoded username
   return isAuthenticated ? (
     <nav className="main-nav w-full h-[5vh]">
       <NavLink to="/" className="main-nav-logo">
