@@ -14,7 +14,7 @@ export function meta({}: Route.MetaArgs) {
 export default function User() {
   const isAuthenticated = useAuthenticated();
   if (!isAuthenticated) {
-    return <Navigate to="/sign-in" replace />;
+    return <Navigate to="/" replace />;
   }
   return <UserPage />;
 }

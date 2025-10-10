@@ -14,7 +14,7 @@ export default function Nav() {
   const handleLogout = () => {
     console.log("Logging out...");
     dispatch(authSlice.actions.logout());
-    Navigate("/");
+    Navigate("/") ;
   }
   // const userName = useSelector((state: any) => state.auth.user?.firstName);
   const userName = "Seb"; // Temporary hardcoded username

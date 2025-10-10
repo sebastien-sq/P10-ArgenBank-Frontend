@@ -2,7 +2,8 @@ import  { useDispatch } from "react-redux";
 import {  useState } from "react";
 import { loginUser } from "~/slices/authSlice.js";
 import { isValidEmail, isValidPassword } from "~/utils/formValidation";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
+import SignUp from "~/routes/sign-up";
 
 
 export default function SignIn() {
@@ -46,7 +47,7 @@ export default function SignIn() {
       <section className="sign-in-content  size-fit m-auto bg-white z-10 p-0">
         <i className="fa fa-user-circle sign-in-icon " style={{fontSize: '1rem'}}></i>
         <h1 className="text-3xl font-bold">Sign In</h1>
-        <form className="flex flex-col gap-1 bg-white" onSubmit={handleFormSubmit}>
+        <form className="flex flex-col gap-1 bg-white mb-2" onSubmit={handleFormSubmit}>
           <div className="input-wrapper">
             <label className="cursor-pointer" htmlFor="email">Email</label>
             <input className="w-full border-2 border-gray-300 rounded-md p-2" type="text" id="email" onChange={(e)=>{setEmail(e.target.value)}} />
@@ -62,6 +63,8 @@ export default function SignIn() {
           <button className="sign-in-button cursor-pointer underline" type="submit" >Sign In</button>
           {error && <p className="text-red-500">{error}</p>}
         </form>
+        
+      <Link to={"/sign-up"} className="hover:underline"> Not registered ? Signup here !</Link>
       </section>
     </div>
   );

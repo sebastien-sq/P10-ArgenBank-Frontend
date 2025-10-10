@@ -47,6 +47,44 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+export const signUpUser = createAsyncThunk(
+  "auth/signUpUser",
+  async ({
+    firstName,
+    lastName,
+    email,
+    password,
+  }: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+  }) => {
+    try {
+      const response = await fetch("http://localhost:3001/api/v1/user/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName, email, password }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to sign up");
+      }
+
+      const data = await response.json();
+      const token = data.body.token;
+
+      if (hasLocalStorage) {
+        window.localStorage.setItem("token", token);
+      }
+
+      return token;
+    } catch (err) {
+      throw new Error((err as Error).message);
+    }
+  }
+);
 
 export const authSlice = createSlice({
   name: "authSlice",
@@ -76,6 +114,7 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // Login user
     builder
       .addCase(loginUser.pending, (state) => {
         state.status = "LOADING";
@@ -90,6 +129,25 @@ export const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "FAILED";
         state.error = action.error.message || "Failed to login";
+        state.isAuthenticated = false;
+        state.token = null;
+      });
+
+    // Sign up user
+    builder
+      .addCase(signUpUser.pending, (state) => {
+        state.status = "LOADING";
+        state.error = null;
+      })
+      .addCase(signUpUser.fulfilled, (state, action) => {
+        state.status = "SUCCEEDED";
+        state.token = action.payload;
+        state.isAuthenticated = true;
+        state.error = null;
+      })
+      .addCase(signUpUser.rejected, (state, action) => {
+        state.status = "FAILED";
+        state.error = action.error.message || "Failed to sign up";
         state.isAuthenticated = false;
         state.token = null;
       });

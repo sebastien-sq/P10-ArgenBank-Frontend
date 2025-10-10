@@ -149,7 +149,7 @@ html {
   margin-bottom: 0.5rem;
 }
 
-.sign-in-button {
+.sign-in-button, .sign-up-button {
   display: block;
   width: 100%;
   padding: 8px;
@@ -161,7 +161,7 @@ html {
   color: #fff;
 }
 
-.sign-in-content {
+.sign-in-content , .sign-up-content {
   box-sizing: border-box;
   background-color: white;
   width: 300px;
@@ -170,7 +170,7 @@ html {
   padding: 2rem;
 }
 
-.sign-in-icon {
+.sign-in-icon, .sign-up-icon {
   font-size: 5rem;
 }
 
