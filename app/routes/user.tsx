@@ -1,5 +1,7 @@
 import type { Route } from "./+types/home";
-import UserPage from "../pages/User.jsx";
+import { useAuthenticated } from "~/hooks/useAuthenticated";
+import { Navigate } from "react-router";
+import UserPage from "~/pages/User";
 
 export const links: Route.LinksFunction = () => [];
 export function meta({}: Route.MetaArgs) {
@@ -10,5 +12,9 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function User() {
+  const isAuthenticated = useAuthenticated();
+  if (!isAuthenticated) {
+    return <Navigate to="/sign-in" replace />;
+  }
   return <UserPage />;
 }

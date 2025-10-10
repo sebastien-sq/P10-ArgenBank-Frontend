@@ -8,9 +8,11 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import  Nav  from "../app/layout/Nav.jsx";
-import  Footer from "../app/layout/Footer.jsx";
+import  Nav  from "~/layout/Nav.js";
+import  Footer from "~/layout/Footer.js";
 import "./app.css";
+import { Provider } from "react-redux";
+import store from "./store";
 
 export const links: Route.LinksFunction = () => [
   {   rel:"stylesheet",
@@ -29,7 +31,9 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+
   return (
+    <Provider store={store}>
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
@@ -47,6 +51,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Scripts />
       </body>
     </html>
+    </Provider>
   );
 }
 

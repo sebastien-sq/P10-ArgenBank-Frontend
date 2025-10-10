@@ -1,5 +1,6 @@
 export default function User() {
-    return (
+
+  return (
       <div className="main bg-dark size-full">
       <div className="header p-4 w-full gap-2 flex flex-col items-center justify-center">
         <h1 className="text-3xl font-bold">Welcome back<br />Tony Jarvis!</h1>
@@ -37,5 +38,5 @@ export default function User() {
         </div>
       </section>
     </div>
-    );
+    )
 }

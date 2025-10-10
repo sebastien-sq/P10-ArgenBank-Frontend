@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home";
-import SignInPage from "../pages/SignIn.jsx";
+import SignInPage from "~/pages/SignIn";
 
 export const links: Route.LinksFunction = () => [];
 export function meta({}: Route.MetaArgs) {
