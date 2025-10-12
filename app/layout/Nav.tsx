@@ -1,6 +1,7 @@
 import {  useDispatch} from "react-redux";
 import { NavLink } from "react-router";
 import {  logout } from "~/slices/authSlice";
+import {clearUser} from "~/slices/userSlice";
 import { useNavigate } from "react-router";
 import { useAuthenticated } from "~/hooks/useAuthenticated";
 import { useFetchUserFirstName } from "~/hooks/useUserProfile";
@@ -13,9 +14,9 @@ export default function Nav() {
   const userName = useFetchUserFirstName();
 
 
-
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(clearUser());
     Navigate("/") ;
   }
   return isAuthenticated ? (

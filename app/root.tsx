@@ -13,6 +13,7 @@ import  Footer from "~/layout/Footer.js";
 import "./app.css";
 import { Provider } from "react-redux";
 import store from "./store";
+import { useInitializeAuth } from "~/hooks/useInitializeAuth";
 
 export const links: Route.LinksFunction = () => [
   {   rel:"stylesheet",
@@ -30,10 +31,11 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
-export function Layout({ children }: { children: React.ReactNode }) {
+function AppContent({ children }: { children: React.ReactNode }) {
+
+  useInitializeAuth();
 
   return (
-    <Provider store={store}>
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
@@ -51,6 +53,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Scripts />
       </body>
     </html>
+  );
+}
+
+export function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <Provider store={store}>
+      <AppContent>{children}</AppContent>
     </Provider>
   );
 }

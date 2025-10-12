@@ -1,9 +1,7 @@
-import  { useDispatch } from "react-redux";
 import {  useState } from "react";
-import { loginUser } from "~/slices/authSlice.js";
 import { isValidEmail, isValidPassword } from "~/utils/validateForm";
 import { Link, useNavigate } from "react-router";
-import SignUp from "~/routes/sign-up";
+import { useLoginUserMutation } from "~/services/authApi";
 
 
 export default function SignIn() {
@@ -12,11 +10,10 @@ export default function SignIn() {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate(); 
-  
+  const [loginUser] = useLoginUserMutation();
 
-  const handleFormSubmit = (event: React.FormEvent) => {
+  const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null); 
 
@@ -28,18 +25,13 @@ export default function SignIn() {
       setError("Password must be at least 3 characters long, contain at least one letter and one number and must includes only letters and numbers.");
       return;
     }
-    
 
-    //FIXME : type any ! 
-    dispatch(loginUser({ email, password, rememberMe }) as any )
-      .unwrap()
-      .then(() => {
-        navigate("/user");
-      }
-      )
-      .catch((err: Error) => {
-        setError(err.message + ". Please check your credentials and try again.");
-      });
+    try {
+      await loginUser({ email, password, rememberMe }).unwrap();
+      navigate("/user");
+    } catch (err: any) {
+      setError((err?.message || "Login failed") + ". Please check your credentials and try again.");
+    }
   };
 
   return (

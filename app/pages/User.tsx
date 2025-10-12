@@ -1,23 +1,29 @@
-import { use, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+
 import {
   useFetchUserFirstName,
   useFetchUserLastName,
 } from "~/hooks/useUserProfile";
 import { isValidFirstName, isValidLastName } from "~/utils/validateForm";
-import { updateUserProfile } from "~/slices/userSlice";
-import { useFetchUserToken } from "~/hooks/useAuthenticated";
+import { useUpdateUserProfileMutation } from "~/services/userApi";
 
 export default function User() {
-  const dispatch = useDispatch();
-  const token = useFetchUserToken();
-  const [firstName, setFirstName] = useState(useFetchUserFirstName());
-  const [pendingFirstName, setPendingFirstName] = useState(firstName);
-  const [lastName, setLastName] = useState(useFetchUserLastName());
-  const [pendingLastName, setPendingLastName] = useState(lastName);
+
+  const firstName = useFetchUserFirstName();
+  const lastName = useFetchUserLastName();
+  
+  const [pendingFirstName, setPendingFirstName] = useState(firstName || "");
+  const [pendingLastName, setPendingLastName] = useState(lastName || "");
   const [error, setError] = useState<string | null>(null);
 
   const [isFormOpen, setIsFormOpen] = useState(false);
+
+  const [updateUserProfile] = useUpdateUserProfileMutation();
+
+  useEffect(() => {
+    if (firstName) setPendingFirstName(firstName);
+    if (lastName) setPendingLastName(lastName);
+  }, [firstName, lastName]);
 
   const handleEditProfile = async ({
     newFirstName,
@@ -35,17 +41,15 @@ export default function User() {
         throw new Error("Invalid last name");
       }
 
-      await dispatch(
-        updateUserProfile({
-          firstName: newFirstName,
-          lastName: newLastName,
-          token: token!,
-        }) as any
-      )
+      await updateUserProfile({
+        firstName: newFirstName,
+        lastName: newLastName,
+      })
         .unwrap()
         .then(() => {
-          setFirstName(newFirstName);
-          setLastName(newLastName);
+          // Les valeurs firstName et lastName seront automatiquement mises à jour via le store Redux
+          setPendingFirstName(newFirstName);
+          setPendingLastName(newLastName);
           setIsFormOpen(false);
         })
         .catch((err: Error) => {
