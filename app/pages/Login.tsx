@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { useLoginUserMutation } from "~/services/authApi";
 
 
-export default function SignIn() {
+export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -30,7 +30,7 @@ export default function SignIn() {
 
     try {
       await loginUser({ email, password, rememberMe }).unwrap();
-      navigate("/user");
+      navigate("/profile");
     } catch (err: any) {
       setError((err?.message || "Login failed") + ". Please check your credentials and try again.");
     }

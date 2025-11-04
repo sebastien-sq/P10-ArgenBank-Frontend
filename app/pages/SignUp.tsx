@@ -41,7 +41,7 @@ export default function SignUp() {
       await loginUser({ email, password, rememberMe: true }).unwrap();
       
       // Naviguer vers la page utilisateur (le token est maintenant stocké)
-      navigate("/user");
+      navigate("/profile");
     } catch (err: any) {
       const errorMessage = err?.data?.message || err?.message || "Sign up failed";
       setError(errorMessage + ". Please check your credentials and try again.");

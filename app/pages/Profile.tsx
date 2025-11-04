@@ -7,7 +7,7 @@ import {
 import { isValid } from "~/utils/validateForm";
 import { useUpdateUserProfileMutation } from "~/services/userApi";
 
-export default function User() {
+export default function Profile() {
 
   const firstName = useFetchUserFirstName();
   const lastName = useFetchUserLastName();

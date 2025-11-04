@@ -30,7 +30,7 @@ export default function Nav() {
         <h1 className="sr-only">Argent Bank</h1>
       </NavLink>
       <div>
-        <NavLink to="/user" className="main-nav-item">
+        <NavLink to="/profile" className="main-nav-item">
           <i className="fa fa-user-circle"></i>
           {userName}
         </NavLink>
@@ -52,7 +52,7 @@ export default function Nav() {
       </NavLink>
       <div>
         <NavLink
-          to="/sign-in"
+          to="/login"
           className="main-nav-item flex gap-1 items-center"
         >
           <i className="fa fa-user-circle"></i>
