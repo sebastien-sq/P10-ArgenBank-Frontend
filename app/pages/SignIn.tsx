@@ -1,5 +1,5 @@
 import {  useState } from "react";
-import { isValidEmail, isValidPassword } from "~/utils/validateForm";
+import { isValid } from "~/utils/validateForm";
 import { Link, useNavigate } from "react-router";
 import { useLoginUserMutation } from "~/services/authApi";
 
@@ -17,13 +17,15 @@ export default function SignIn() {
     event.preventDefault();
     setError(null); 
 
-    if(!isValidEmail(email) ) {
-      setError("Invalid email format");
-      return;
-    }
-    if(!isValidPassword(password) ) {
-      setError("Password must be at least 3 characters long, contain at least one letter and one number and must includes only letters and numbers.");
-      return;
+    let inputs = [
+      { type: "email", value: email },
+      { type: "password", value: password },
+    ];
+    for(let input of inputs) {
+      if(!isValid(input.type as "email" | "password", input.value).isValid ) {
+        setError(isValid(input.type as "email" | "password", input.value).errorMessage ?? null);
+        return;
+      }
     }
 
     try {
