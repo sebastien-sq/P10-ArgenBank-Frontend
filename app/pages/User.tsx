@@ -4,7 +4,7 @@ import {
   useFetchUserFirstName,
   useFetchUserLastName,
 } from "~/hooks/useUserProfile";
-import { isValidFirstName, isValidLastName } from "~/utils/validateForm";
+import { isValid } from "~/utils/validateForm";
 import { useUpdateUserProfileMutation } from "~/services/userApi";
 
 export default function User() {
@@ -34,11 +34,11 @@ export default function User() {
   }) => {
     try {
       setError(null);
-      if (!isValidFirstName(newFirstName)) {
-        throw new Error("Invalid first name");
+      if (!isValid("firstName", newFirstName).isValid) {
+        throw new Error(isValid("firstName", newFirstName).errorMessage ?? "Invalid first name");
       }
-      if (!isValidLastName(newLastName)) {
-        throw new Error("Invalid last name");
+      if (!isValid("lastName", newLastName).isValid) {
+        throw new Error(isValid("lastName", newLastName).errorMessage ?? "Invalid last name");
       }
 
       await updateUserProfile({
