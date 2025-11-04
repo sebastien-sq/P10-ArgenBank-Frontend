@@ -1,0 +1,606 @@
+swagger: '2.0'
+info:
+  title: Bank Argent API documentation
+  description: Contains all available API endpoints in this codebase
+  version: '1.0.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /user/login:
+    post:
+      tags:
+        - User Module
+      summary: Login
+      description: API for Login
+      parameters:
+        - in: body
+          name: body
+          description: Login Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Login'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Login Successfully
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/signup:
+    post:
+      tags:
+        - User Module
+      summary: Signup
+      description: API for Signup
+      parameters:
+        - in: body
+          name: body
+          description: Signup Payload
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Signup Successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/profile:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for fetching a user profile
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Attach Bearer JWT token
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User profile retrieved successully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for updating a user profile
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Attach Bearer JWT token
+          required: true
+        - in: body
+          name: body
+          description: Update user profile attributes
+          required: true
+          schema:
+            $ref: '#/definitions/UserProfile'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User profile retrieved successully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/transactions/{accountType}/current-month:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Transactions Module
+      summary: Get all transactions for current month by account type
+      description: API for fetching all transactions for the current month for a specific account type (checking/savings/credit)
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: accountType
+          type: string
+          required: true
+          description: Type of account (checking/savings/credit)
+          enum: [checking, savings, credit]
+        - in: query
+          name: month
+          type: integer
+          required: false
+          description: Month number (1-12). If not provided, uses current month
+          minimum: 1
+          maximum: 12
+        - in: query
+          name: year
+          type: integer
+          required: false
+          description: Year (4 digits). If not provided, uses current year
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Current month transactions retrieved successfully
+          schema:
+            $ref: '#/definitions/TransactionsResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/transactions/{accountType}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Transactions Module
+      summary: Get all transactions for an account type
+      description: API for fetching all transactions for a specific account type (checking/savings/credit)
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: accountType
+          type: string
+          required: true
+          description: Type of account (checking/savings/credit)
+          enum: [checking, savings, credit]
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transactions retrieved successfully
+          schema:
+            $ref: '#/definitions/TransactionsResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - User Transactions Module
+      summary: Create a new transaction
+      description: API for creating a new transaction for a specific account type
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: accountType
+          type: string
+          required: true
+          description: Type of account (checking/savings/credit)
+          enum: [checking, savings, credit]
+        - in: body
+          name: body
+          description: Transaction data to create
+          required: true
+          schema:
+            $ref: '#/definitions/CreateTransaction'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Transaction created successfully
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+        '400':
+          description: Invalid Fields
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+
+  /user/transactions/{accountType}/{transactionId}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Transactions Module
+      summary: Get specific transaction
+      description: API for fetching a specific transaction by its ID
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: accountType
+          type: string
+          required: true
+          description: Type of account (checking/savings/credit)
+          enum: [checking, savings, credit]
+        - in: path
+          name: transactionId
+          type: string
+          required: true
+          description: ID of the transaction
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction retrieved successfully
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+        '400':
+          description: Invalid Fields
+        '404':
+          description: Transaction not found
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User Transactions Module
+      summary: Update a transaction
+      description: API for updating an existing transaction's information
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: accountType
+          type: string
+          required: true
+          description: Type of account (checking/savings/credit)
+          enum: [checking, savings, credit]
+        - in: path
+          name: transactionId
+          type: string
+          required: true
+          description: ID of the transaction to update
+        - in: body
+          name: body
+          description: Transaction data to update
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateTransaction'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction updated successfully
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+        '400':
+          description: Invalid Fields
+        '401':
+          description: Unauthorized
+        '404':
+          description: Transaction not found
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - User Transactions Module
+      summary: Delete a transaction
+      description: API for deleting a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: accountType
+          type: string
+          required: true
+          description: Type of account (checking/savings/credit)
+          enum: [checking, savings, credit]
+        - in: path
+          name: transactionId
+          type: string
+          required: true
+          description: ID of the transaction to delete
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction deleted successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '401':
+          description: Unauthorized
+        '404':
+          description: Transaction not found
+        '500':
+          description: Internal Server Error
+
+  /user/accounts/balance:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Transactions Module
+      summary: Get account balances
+      description: API for fetching total balances for all account types
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Attach Bearer JWT token
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Account balances retrieved successfully
+          schema:
+            $ref: '#/definitions/AccountBalancesResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  User:
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+      firstName:
+        type: string
+        description: user first name
+      lastName:
+        type: string
+        description: user last name
+  Login:
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+  ApiResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          id:
+            type: string
+          email:
+            type: string
+  LoginResponse:
+    type: object
+    properties:
+      token:
+        type: string
+  UserProfile:
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+  Transactions:
+    type: object
+    properties:
+      id:
+        type: string
+      amount:
+        type: number
+      date:
+        type: string
+      description:
+        type: string
+      type:
+        type: string
+      accountId:
+        type: string
+  Account:
+    type: object
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      balance:
+        type: number
+      transactions:
+        type: array
+        items:
+          $ref: '#/definitions/Transactions'
+  UserTransactionsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          id:
+            type: string
+          checking:
+            $ref: '#/definitions/Account'
+          savings:
+            $ref: '#/definitions/Account'
+          credit:
+            $ref: '#/definitions/Account'
+  TransactionsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: array
+        items:
+          $ref: '#/definitions/Transactions'
+  TransactionResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        $ref: '#/definitions/Transactions'
+
+  AccountBalancesResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          checking:
+            type: object
+            properties:
+              balance:
+                type: number
+                description: Total balance for checking accounts
+          savings:
+            type: object
+            properties:
+              balance:
+                type: number
+                description: Total balance for savings accounts
+          credit:
+            type: object
+            properties:
+              balance:
+                type: number
+                description: Total balance for credit card accounts
+  CreateTransaction:
+    type: object
+    required:
+      - amount
+      - date
+      - description
+      - type
+    properties:
+      amount:
+        type: number
+        description: Transaction amount (positive for credit, negative for debit)
+      date:
+        type: string
+        format: date
+        description: Transaction date (YYYY-MM-DD format)
+      description:
+        type: string
+        description: Transaction description or notes
+      type:
+        type: string
+        description: Transaction type (e.g., transfer, payment, deposit, withdrawal)
+  UpdateTransaction:
+    type: object
+    properties:
+      amount:
+        type: number
+        description: Transaction amount (positive for credit, negative for debit)
+      date:
+        type: string
+        format: date
+        description: Transaction date (YYYY-MM-DD format)
+      description:
+        type: string
+        description: Transaction description or notes
+      type:
+        type: string
+        description: Transaction type (e.g., transfer, payment, deposit, withdrawal)
+  CurrentMonthTransactionsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          checking:
+            type: object
+            properties:
+              accountId:
+                type: string
+                description: Account ID for checking account
+              transactions:
+                type: array
+                items:
+                  $ref: '#/definitions/Transactions'
+                description: List of transactions for checking account in current month
+          savings:
+            type: object
+            properties:
+              accountId:
+                type: string
+                description: Account ID for savings account
+              transactions:
+                type: array
+                items:
+                  $ref: '#/definitions/Transactions'
+                description: List of transactions for savings account in current month
+          credit:
+            type: object
+            properties:
+              accountId:
+                type: string
+                description: Account ID for credit account
+              transactions:
+                type: array
+                items:
+                  $ref: '#/definitions/Transactions'
+                description: List of transactions for credit account in current month
+
