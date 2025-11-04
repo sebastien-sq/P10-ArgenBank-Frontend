@@ -1,6 +1,5 @@
-import  { useDispatch } from "react-redux";
 import {  useState } from "react";
-import {  signUpUser } from "~/slices/authSlice.js";
+import { useLoginUserMutation, useSignUpUserMutation } from "~/services/authApi";
 import { isValidEmail, isValidPassword, isValidFirstName, isValidLastName } from "~/utils/validateForm";
 import { useNavigate } from "react-router";
 
@@ -12,11 +11,12 @@ export default function SignUp() {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
-  const dispatch = useDispatch();
+  const [signUpUser] = useSignUpUserMutation();
+  const [loginUser] = useLoginUserMutation();
   const navigate = useNavigate(); 
   
 
-  const handleFormSubmit = (event: React.FormEvent) => {
+  const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null); 
 
@@ -37,17 +37,19 @@ export default function SignUp() {
       return;
     }
     
-
-    //FIXME : type any ! 
-    dispatch(signUpUser({ firstName, lastName, email, password }) as any )
-      .unwrap()
-      .then(() => {
-        navigate("/user");
-      }
-      )
-      .catch((err: Error) => {
-        setError(err.message || "Failed to sign up");
-      });
+    try {
+      // Ici l'api ne renvoie pas directement le token, mais l'ID et l'email
+      await signUpUser({ firstName, lastName, email, password }).unwrap();
+      
+      // Se connecter pour obtenir le token d'authentification
+      await loginUser({ email, password, rememberMe: true }).unwrap();
+      
+      // Naviguer vers la page utilisateur (le token est maintenant stocké)
+      navigate("/user");
+    } catch (err: any) {
+      const errorMessage = err?.data?.message || err?.message || "Sign up failed";
+      setError(errorMessage + ". Please check your credentials and try again.");
+    }
   };
 
   return (

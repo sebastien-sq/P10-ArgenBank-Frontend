@@ -45,8 +45,23 @@ export const authApi = createApi({
             query: (body) => ({
                 url: "user/signup",
                 method: "POST",
-                body,
+                body : { firstName: body.firstName, lastName: body.lastName, email: body.email, password: body.password }
             }),
+            transformResponse: (response: { body: { id: string; email: string } }) => {
+                return { id: response.body.id, email: response.body.email };
+            },
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    // Le signup est réussi, mais on ne stocke pas de token ici
+                    // Le token sera obtenu via le login qui suit dans SignUp.tsx
+                }
+                 catch (error: any) {
+                    dispatch(authSlice.actions.signUpFailed(
+                        error.error?.data?.message || error.error?.message || 'Something went wrong, please try again.'
+                    ));
+                }
+            }
         }),
     }),
 });

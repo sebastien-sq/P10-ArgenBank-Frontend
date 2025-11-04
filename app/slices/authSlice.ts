@@ -43,7 +43,13 @@ export const authSlice = createSlice({
       state.isAuthenticated = false;
       state.token = null;
     },
+    signUpFailed: (state, action) => {
+      state.status = "FAILED";
+      state.error = action.payload;
+      state.isAuthenticated = false;
+      state.token = null;
+    },
   },
 });
 
-export const { logout, loginFailed, setCredentials } = authSlice.actions;
+export const { logout, loginFailed, setCredentials, signUpFailed } = authSlice.actions;
