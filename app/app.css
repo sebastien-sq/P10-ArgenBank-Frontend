@@ -67,7 +67,7 @@ html {
 }
 
 .hero {
-  background-image: url('../img/bank-tree.jpeg');
+  background-image: url('../img/bank-tree.webp');
   background-position: 0 -50px;
   background-size: cover;
   background-repeat: no-repeat;
@@ -119,30 +119,37 @@ html {
   }
 }
 
-.features {
+.account-types {
   display: flex;
   flex-direction: column;
 }
 
 @media (min-width: 920px) {
-  .features {
+  .account-types {
     flex-direction: row;
   }
 }
 
-.feature-icon {
+.account-type-icon {
   width: 100px;
   border: 10px solid #00bc77;
   border-radius: 50%;
   padding: 1rem;
 }
 
-.feature-item {
+.account-type {
   flex: 1;
   padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #9c9c9c;
+  margin-bottom: 2rem;
+  gap: 1rem;
 }
 
-.feature-item-title {
+.account-type-title {
   color: #222;
   font-size: 1.25rem;
   font-weight: bold;
